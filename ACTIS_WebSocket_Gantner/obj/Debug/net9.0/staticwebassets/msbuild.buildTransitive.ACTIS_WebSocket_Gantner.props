@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\ACTIS_WebSocket_Gantner.props" />
+</Project>

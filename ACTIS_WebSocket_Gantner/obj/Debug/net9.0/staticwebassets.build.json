@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "YMyfWX27HWV4tySHTb6Hx77weI8Ec9vWg1rwLiba5EQ=",
+  "Source": "ACTIS_WebSocket_Gantner",
+  "BasePath": "_content/ACTIS_WebSocket_Gantner",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

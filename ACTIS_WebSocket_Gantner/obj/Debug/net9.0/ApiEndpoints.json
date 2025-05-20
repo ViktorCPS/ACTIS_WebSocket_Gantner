@@ -1,0 +1,18 @@
+[
+  {
+    "ContainingType": "ACTIS_WebSocket_Gantner.Controllers.DeviceController",
+    "Method": "Device",
+    "RelativePath": "ws/Device/{deviceId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "deviceId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

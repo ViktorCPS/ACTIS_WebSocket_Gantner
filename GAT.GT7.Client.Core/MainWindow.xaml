@@ -1,0 +1,155 @@
+﻿<Window x:Class="GAT.GT7.Client.Core.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GAT.GT7.Client.Core"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Margin="10">
+    <Window.DataContext>
+        <local:MainViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <local:InverseBooleanConverter x:Key="BoolToVis"/>
+        <local:EnumNameConverter x:Key="EnumNameConverter"/>
+
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="MinWidth" Value="200px"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+        </Style>
+        <Style TargetType="{x:Type xctk:IntegerUpDown}">
+            <Setter Property="MinWidth" Value="200px"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+        </Style>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="MinWidth" Value="100px"/>
+        </Style>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="10,0,0,0"/>
+            <Setter Property="Padding" Value="10 0 10 0"/>
+        </Style>
+        <Style TargetType="{x:Type DataGrid}">
+            <Setter Property="Margin" Value="0,0,0,5"/>
+        </Style>
+        <Style TargetType="{x:Type CheckBox}">
+            <Setter Property="Margin" Value="2,5,2,5"/>
+        </Style>
+
+    </Window.Resources>
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Column="0" Grid.Row="0" Content="Host"/>
+        <TextBox Grid.Column="1" Grid.Row="0" Name="Host" Text="{Binding Host}" IsEnabled="{Binding IsStarted, Converter={StaticResource BoolToVis}}"/>
+
+        <Label Grid.Column="0" Grid.Row="1"  Content="Username"/>
+        <TextBox Grid.Column="1" Grid.Row="1" Name="Username" Text="{Binding User}" IsEnabled="{Binding IsStarted, Converter={StaticResource BoolToVis}}"/>
+
+        <Label Grid.Column="0" Grid.Row="2" Content="Password"/>
+        <TextBox Grid.Column="1" Grid.Row="2" Name="Password" Text="{Binding Password}" IsEnabled="{Binding IsStarted, Converter={StaticResource BoolToVis}}"/>
+
+        <Button Grid.Column="3" Grid.Row="0" Content="Start" Command="{Binding StartDeviceCommand}"/>
+        <Button Grid.Column="4" Grid.Row="0" Content="Stop" Command="{Binding StopDeviceCommand}"/>
+
+        <CheckBox Grid.Row="2" Grid.Column="4" IsChecked="{Binding IsConnected}" Content="Connected" IsEnabled="False"/>
+
+
+
+        <DataGrid Grid.Row="3" Grid.ColumnSpan="99" ItemsSource="{Binding LogEntries}"
+                  IsReadOnly="True" AutoGenerateColumns="False" ClipboardCopyMode="ExcludeHeader"
+                  local:DataGridBehavior.Autoscroll="{Binding AutoScroll}">
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="BorderThickness" Value="0"/>
+                </Style>
+            </DataGrid.CellStyle>
+
+            <DataGrid.Resources>
+
+                <Style TargetType="{x:Type TextBlock}" x:Key="textBlockStyle">
+                    <Setter Property="Padding" Value="5,2,5,2" />
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Date" Binding="{Binding Date}" ElementStyle="{StaticResource textBlockStyle}"/>
+
+
+                <DataGridTemplateColumn Header="Type">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Stretch="None">
+                                <Image.Style>
+                                    <Style TargetType="{x:Type Image}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Type}" Value="{x:Static local:LogEntryTypeEnum.Connected}">
+                                                <Setter Property="Source" Value="/GAT.GT7.Client.Core;component/Resources/connected_16x16.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Type}" Value="{x:Static local:LogEntryTypeEnum.Disconnected}">
+                                                <Setter Property="Source" Value="/GAT.GT7.Client.Core;component/Resources/disconnected_16x16.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Type}" Value="{x:Static local:LogEntryTypeEnum.DataReceived}">
+                                                <Setter Property="Source" Value="/GAT.GT7.Client.Core;component/Resources/received_16x16.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Type}" Value="{x:Static local:LogEntryTypeEnum.DataSent}">
+                                                <Setter Property="Source" Value="/GAT.GT7.Client.Core;component/Resources/sent_16x16.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Type}" Value="{x:Static local:LogEntryTypeEnum.Message}">
+                                                <Setter Property="Source" Value="/GAT.GT7.Client.Core;component/Resources/message_16x16.png"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Message" Width="*" ClipboardContentBinding="{Binding Message}" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Message}" ToolTip="{Binding MessageFormatted}" Style="{StaticResource textBlockStyle}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+
+        <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="99">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <CheckBox Grid.Row="1" Grid.Column="0" IsChecked="{Binding AllowAccess}" Content="Allow Access"/>
+
+            <CheckBox Grid.Column="3" IsChecked="{Binding AutoScroll}" Content="Autoscroll" HorizontalContentAlignment="Center"/>
+            <Button  Grid.Column="4" Content="Clear" Command="{Binding ClearCommunicationCommand}"/>
+
+            <Label Grid.Column="0" Content="Delay [ms]"/>
+            <xctk:IntegerUpDown  Grid.Column="1" Name="Delay" Text="{Binding Path=Delay,UpdateSourceTrigger=PropertyChanged}" Increment="100" Minimum="0"/>
+        </Grid>
+    </Grid>
+</Window>
