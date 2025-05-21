@@ -108,3 +108,4 @@ C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\GAT.GT7.Client.Co
 C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\GAT.GT7.Client.Core\obj\Debug\net7.0-windows\GAT.GT7.Client.Core.pdb
 C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\GAT.GT7.Client.Core\obj\Debug\net7.0-windows\GAT.GT7.Client.Core.genruntimeconfig.cache
 C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\GAT.GT7.Client.Core\obj\Debug\net7.0-windows\ref\GAT.GT7.Client.Core.dll
+C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\GAT.GT7.Client.Core\obj\Debug\net7.0-windows\GAT.GT7.Client.Core.sourcelink.json

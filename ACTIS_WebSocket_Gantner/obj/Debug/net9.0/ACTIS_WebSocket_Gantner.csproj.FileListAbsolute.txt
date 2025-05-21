@@ -21,7 +21,6 @@ C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_G
 C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\obj\Debug\net9.0\staticwebassets\msbuild.buildMultiTargeting.ACTIS_WebSocket_Gantner.props
 C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\obj\Debug\net9.0\staticwebassets\msbuild.buildTransitive.ACTIS_WebSocket_Gantner.props
 C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\obj\Debug\net9.0\staticwebassets.pack.json
-C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\obj\Debug\net9.0\ACTIS_WebSocket_Gantner.dll
 C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\obj\Debug\net9.0\refint\ACTIS_WebSocket_Gantner.dll
 C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\obj\Debug\net9.0\ACTIS_WebSocket_Gantner.pdb
@@ -164,3 +163,4 @@ C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_G
 C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\bin\Debug\net9.0\Newtonsoft.Json.dll
 C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\bin\Debug\net9.0\GAT.Core.Devices.Gen7.dll
 C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\bin\Debug\net9.0\GAT.Core.Devices.Gen7.pdb
+C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\obj\Debug\net9.0\ACTIS_WebSocket_Gantner.sourcelink.json

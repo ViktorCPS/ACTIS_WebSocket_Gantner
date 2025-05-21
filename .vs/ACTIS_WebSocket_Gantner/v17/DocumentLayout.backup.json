@@ -3,6 +3,18 @@
   "WorkspaceRootPath": "C:\\Users\\Viktor Smederevo\\source\\repos\\ACTIS_WebSocket_Gantner\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{2B78F4B4-A67D-4244-A051-F1F7D0F9184D}|ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner.csproj|c:\\users\\viktor smederevo\\source\\repos\\actis_websocket_gantner\\actis_websocket_gantner\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2B78F4B4-A67D-4244-A051-F1F7D0F9184D}|ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner.csproj|solutionrelative:actis_websocket_gantner\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2B78F4B4-A67D-4244-A051-F1F7D0F9184D}|ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner.csproj|c:\\users\\viktor smederevo\\source\\repos\\actis_websocket_gantner\\actis_websocket_gantner\\controllers\\devicecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2B78F4B4-A67D-4244-A051-F1F7D0F9184D}|ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner.csproj|solutionrelative:actis_websocket_gantner\\controllers\\devicecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2B78F4B4-A67D-4244-A051-F1F7D0F9184D}|ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner.csproj|c:\\users\\viktor smederevo\\source\\repos\\actis_websocket_gantner\\actis_websocket_gantner\\gt7device.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2B78F4B4-A67D-4244-A051-F1F7D0F9184D}|ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner.csproj|solutionrelative:actis_websocket_gantner\\gt7device.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{2B78F4B4-A67D-4244-A051-F1F7D0F9184D}|ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner.csproj|c:\\users\\viktor smederevo\\source\\repos\\actis_websocket_gantner\\actis_websocket_gantner\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{2B78F4B4-A67D-4244-A051-F1F7D0F9184D}|ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner.csproj|solutionrelative:actis_websocket_gantner\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
@@ -13,18 +25,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{4EA95A9E-6EFC-7EED-F90D-0B71B3E46196}|GAT.GT7.Client.Core\\GAT.GT7.Client.Core.csproj|c:\\users\\viktor smederevo\\source\\repos\\actis_websocket_gantner\\gat.gt7.client.core\\gat.gt7.client.core.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
       "RelativeMoniker": "D:0:0:{4EA95A9E-6EFC-7EED-F90D-0B71B3E46196}|GAT.GT7.Client.Core\\GAT.GT7.Client.Core.csproj|solutionrelative:gat.gt7.client.core\\gat.gt7.client.core.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2B78F4B4-A67D-4244-A051-F1F7D0F9184D}|ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner.csproj|c:\\users\\viktor smederevo\\source\\repos\\actis_websocket_gantner\\actis_websocket_gantner\\controllers\\devicecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2B78F4B4-A67D-4244-A051-F1F7D0F9184D}|ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner.csproj|solutionrelative:actis_websocket_gantner\\controllers\\devicecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2B78F4B4-A67D-4244-A051-F1F7D0F9184D}|ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner.csproj|c:\\users\\viktor smederevo\\source\\repos\\actis_websocket_gantner\\actis_websocket_gantner\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2B78F4B4-A67D-4244-A051-F1F7D0F9184D}|ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner.csproj|solutionrelative:actis_websocket_gantner\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2B78F4B4-A67D-4244-A051-F1F7D0F9184D}|ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner.csproj|c:\\users\\viktor smederevo\\source\\repos\\actis_websocket_gantner\\actis_websocket_gantner\\gt7device.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2B78F4B4-A67D-4244-A051-F1F7D0F9184D}|ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner.csproj|solutionrelative:actis_websocket_gantner\\gt7device.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,36 +34,34 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "GAT.GT7.Client.Core",
               "DocumentMoniker": "C:\\Users\\Viktor Smederevo\\source\\repos\\ACTIS_WebSocket_Gantner\\GAT.GT7.Client.Core\\GAT.GT7.Client.Core.csproj",
               "RelativeDocumentMoniker": "GAT.GT7.Client.Core\\GAT.GT7.Client.Core.csproj",
               "ToolTip": "C:\\Users\\Viktor Smederevo\\source\\repos\\ACTIS_WebSocket_Gantner\\GAT.GT7.Client.Core\\GAT.GT7.Client.Core.csproj",
               "RelativeToolTip": "GAT.GT7.Client.Core\\GAT.GT7.Client.Core.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-05-20T07:01:48.67Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-20T07:01:48.67Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\Viktor Smederevo\\source\\repos\\ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner\\appsettings.json",
               "RelativeDocumentMoniker": "ACTIS_WebSocket_Gantner\\appsettings.json",
-              "ToolTip": "C:\\Users\\Viktor Smederevo\\source\\repos\\ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner\\appsettings.json*",
-              "RelativeToolTip": "ACTIS_WebSocket_Gantner\\appsettings.json*",
+              "ToolTip": "C:\\Users\\Viktor Smederevo\\source\\repos\\ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner\\appsettings.json",
+              "RelativeToolTip": "ACTIS_WebSocket_Gantner\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAACFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-05-20T06:34:00.704Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-20T06:34:00.704Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "DataBaseContext.cs",
               "DocumentMoniker": "C:\\Users\\Viktor Smederevo\\source\\repos\\ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner\\Data\\DataBaseContext.cs",
               "RelativeDocumentMoniker": "ACTIS_WebSocket_Gantner\\Data\\DataBaseContext.cs",
@@ -71,42 +69,42 @@
               "RelativeToolTip": "ACTIS_WebSocket_Gantner\\Data\\DataBaseContext.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAABdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-19T11:56:15.61Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-19T11:56:15.61Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "DeviceController.cs",
               "DocumentMoniker": "C:\\Users\\Viktor Smederevo\\source\\repos\\ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner\\Controllers\\DeviceController.cs",
               "RelativeDocumentMoniker": "ACTIS_WebSocket_Gantner\\Controllers\\DeviceController.cs",
               "ToolTip": "C:\\Users\\Viktor Smederevo\\source\\repos\\ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner\\Controllers\\DeviceController.cs",
               "RelativeToolTip": "ACTIS_WebSocket_Gantner\\Controllers\\DeviceController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAXAAAAAAAAAA==",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAQwA4AAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-19T11:27:06.861Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "Startup.cs",
               "DocumentMoniker": "C:\\Users\\Viktor Smederevo\\source\\repos\\ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner\\Startup.cs",
               "RelativeDocumentMoniker": "ACTIS_WebSocket_Gantner\\Startup.cs",
               "ToolTip": "C:\\Users\\Viktor Smederevo\\source\\repos\\ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner\\Startup.cs",
               "RelativeToolTip": "ACTIS_WebSocket_Gantner\\Startup.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-19T11:13:26.746Z"
+              "WhenOpened": "2025-05-19T11:13:26.746Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 2,
               "Title": "GT7Device.cs",
               "DocumentMoniker": "C:\\Users\\Viktor Smederevo\\source\\repos\\ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner\\GT7Device.cs",
               "RelativeDocumentMoniker": "ACTIS_WebSocket_Gantner\\GT7Device.cs",
               "ToolTip": "C:\\Users\\Viktor Smederevo\\source\\repos\\ACTIS_WebSocket_Gantner\\ACTIS_WebSocket_Gantner\\GT7Device.cs",
               "RelativeToolTip": "ACTIS_WebSocket_Gantner\\GT7Device.cs",
-              "ViewState": "AgIAAHsAAAAAAAAAAAAUwIgAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAHMAAAAAAAAAAADwv4gAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-19T14:05:06.837Z"
             }

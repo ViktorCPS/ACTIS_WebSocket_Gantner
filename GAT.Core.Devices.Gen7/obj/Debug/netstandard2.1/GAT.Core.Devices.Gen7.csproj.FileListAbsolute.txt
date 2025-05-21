@@ -18,3 +18,4 @@ C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\GAT.Core.Devices.
 C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\GAT.Core.Devices.Gen7\obj\Debug\netstandard2.1\GAT.Core.Devices.Gen7.csproj.CoreCompileInputs.cache
 C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\GAT.Core.Devices.Gen7\obj\Debug\netstandard2.1\GAT.Core.Devices.Gen7.dll
 C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\GAT.Core.Devices.Gen7\obj\Debug\netstandard2.1\GAT.Core.Devices.Gen7.pdb
+C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\GAT.Core.Devices.Gen7\obj\Debug\netstandard2.1\GAT.Core.Devices.Gen7.sourcelink.json
