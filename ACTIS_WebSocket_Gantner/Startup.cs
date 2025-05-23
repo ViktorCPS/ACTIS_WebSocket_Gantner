@@ -1,5 +1,6 @@
 ﻿using ACTIS_WebSocket_Gantner.Data;
 using Microsoft.EntityFrameworkCore;
+using ACTIS_WebSocket_Gantner.Models;
 
 namespace ACTIS_WebSocket_Gantner
 {
@@ -14,7 +15,7 @@ namespace ACTIS_WebSocket_Gantner
         {
             services.AddMvc();
             string connString = Configuration.GetConnectionString("ACTIS_Database");
-            services.AddDbContext<DataBaseContext>(options => options.UseSqlServer(connString));
+            services.AddDbContext<Actis3011aprilContext>(options => options.UseSqlServer(connString));
         }
 
         public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env)

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ACTIS_WebSocket_Gantner")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d8955f051afdb8c29c71fb886bdaf14139893cc0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3ada941a88806bf7d075f92d564b39e2cfc93276")]
 [assembly: System.Reflection.AssemblyProductAttribute("ACTIS_WebSocket_Gantner")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ACTIS_WebSocket_Gantner")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

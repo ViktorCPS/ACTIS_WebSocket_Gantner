@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ACTIS_WebSocket_Gantner.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.Net.WebSockets;
 
 namespace ACTIS_WebSocket_Gantner.Controllers

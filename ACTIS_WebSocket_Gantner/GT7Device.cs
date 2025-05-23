@@ -1,12 +1,18 @@
 ﻿using System;
+using System.Collections;
 using System.Net.WebSockets;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
+using ACTIS_WebSocket_Gantner.Models;
 using GAT.Core.Devices.Gen7;
 using GAT.Core.Devices.Gen7.Commands.App;
 using GAT.Core.Devices.Gen7.Commands.General;
 using GAT.Core.Devices.Gen7.Commands.System;
 using GAT.Core.Devices.Gen7.Exceptions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualBasic;
 
 namespace ACTIS_WebSocket_Gantner
 {
@@ -15,7 +21,6 @@ namespace ACTIS_WebSocket_Gantner
         private readonly ILogger<GT7Device> _logger;
         private readonly string _deviceId;
         private readonly Gen7DeviceServer _device;
-
         /// <summary>
         /// Constructor for GT7Device.
         /// </summary>
@@ -137,20 +142,215 @@ namespace ACTIS_WebSocket_Gantner
 
             try
             {
-                //GAT7Manager gtMng = new GAT7Manager();
-                // // Check if user is allowed at a specific device.
-                //if (gtMng.CheckTagOnGate(_deviceId, cardIdentEvent.UID))
-                //{
-                //    var response = await _device.SendRequestAsync<StartUnlockProcessRequest, StartUnlockProcessResponse>(new StartUnlockProcessRequest { DisplayText = "Pristup dozvoljen. Dobrodosli!", UnlockingTime_ms = 5000 });
-                //    _logger.LogDebug("Pristup dozvoljen.");
-                //}
-                //else
-                //{
-                //    var response = await _device.SendRequestAsync<StartDenyProcessRequest, StartDenyProcessResponse>(new StartDenyProcessRequest { DisplayText = "Pristup nije dozvoljen!" });
-                //    _logger.LogDebug("Pristup odbijen.");
-                //}
+                bool passValid = true;
+                if (await checkRequest(cardIdentEvent.UID))
+                {
+                    var response = await _device.SendRequestAsync<StartUnlockProcessRequest, StartUnlockProcessResponse>(new StartUnlockProcessRequest { DisplayText = "Pristup dozvoljen. Dobrodosli!", UnlockingTime_ms = 5000 });
+                    _logger.LogDebug("Pristup dozvoljen.");
+                    await checkLimitRemaining(cardIdentEvent.UID,passValid);
+                }
+                else
+                {
+                    var response = await _device.SendRequestAsync<StartDenyProcessRequest, StartDenyProcessResponse>(new StartDenyProcessRequest {DisplayText="Pristup nije dozvoljen!" });
+                    _logger.LogDebug("Pristup nije dozvoljen.");
+                    await checkLimitRemaining(cardIdentEvent.UID, passValid);
+                }
             }
             catch (RequestFailedException ex)
+            {
+                _logger.LogError(ex, "Failed to handle card ident.");
+            }
+        }
+
+        private async Task<bool> checkRequest(string UID)
+        {
+            bool isValid = true;
+
+            try
+            {
+                //IZVLACENJE IZ dbContext info o terminalu,tiketu,dogadjaju,intervalu dnevnom za tu kartu za kapiju i provera da li je karta vazeca u tom trenutku
+                Actis3011aprilContext dbContext = new(); // konekcija sa bazom
+                ValidationTerminal vt = await dbContext.ValidationTerminals.Where(x => x.IpAddress == _deviceId && x.Status == "ENABLED").FirstOrDefaultAsync(); // izvlacenje terminala iz baze
+                List<Ticket> tickets = await dbContext.Tickets.Where(x => x.TicketId == UID).OrderBy(x => x.OrdNum).Include(x => x.TicketType).ToListAsync(); // svi ticketi sa ovim UID
+                List<DailyInterval> dailyIntervals = []; //
+                List<WeekSchedulesXGate> weekSchedulesXGate = [];
+                List<Pass> passes = [];
+                Ticket ticket = tickets[^1];
+                Event ticket_event = new();
+                DailyInterval dailyInterval = new();
+                int gateId = -1, terminalId = -1;
+                int day = (int)DateTime.Now.DayOfWeek;
+                if (vt != null)
+                {
+                    gateId = vt.GateId;
+                    terminalId = vt.ValidationTerminalId;
+                }
+                else
+                {
+                    isValid = false;
+                }
+                if (isValid && ticket != null && ticket.EventId != null)
+                {
+                    ticket_event = await dbContext.Events.FindAsync(ticket.EventId);
+                }
+                else
+                {
+                    isValid = false;
+                }
+                if (isValid && ticket_event != null && ticket != null)
+                {
+                    weekSchedulesXGate = await dbContext.WeekSchedulesXGates.Where(x => x.WeekScheduleId == ticket.TicketType.WeekScheduleId && x.Day == day).ToListAsync();
+                    foreach (var item in weekSchedulesXGate)
+                    {
+                        DailyInterval di = await dbContext.DailyIntervals.Where(x => x.DailyIntervalId == item.DailyIntervalId).FirstOrDefaultAsync();
+                        if (di != null)
+                            dailyIntervals.Add(di);
+                    }
+                    passes=await dbContext.Passes.Where(x=>x.TicketId== ticket.TicketId && x.OrdNum==ticket.OrdNum).ToListAsync();
+                }
+                else
+                { isValid = false; }
+
+                if (isValid && ticket != null && vt != null && ticket_event != null && weekSchedulesXGate != null)
+                {
+                    if (ticket.ValidFrom <= DateTime.Now && ticket.ValidTo > DateTime.Now && (ticket.LimitTotal > 0 || ticket.LimitTotal == -100) && ticket.Status == "1" && ticket_event.DateStart <= DateTime.Now && ticket_event.DateEnd < DateTime.Now)
+                    {
+                        foreach (var item in dailyIntervals)
+                        {
+                            DateTime startTimeItem = new DateTime(item.StartTime.Year, item.StartTime.Month, item.StartTime.Day, item.StartTime.Hour, item.StartTime.Minute, item.StartTime.Second);
+                            DateTime endTimeItem = new DateTime(item.EndTime.Year, item.EndTime.Month, item.EndTime.Day, item.EndTime.Hour, item.EndTime.Minute, item.EndTime.Second);
+                            DateTime currTime = new DateTime(item.StartTime.Year, item.StartTime.Month, item.StartTime.Day, DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+                            if (currTime >= startTimeItem && currTime <= endTimeItem)
+                            {
+                                isValid = true;
+                                dailyInterval = item;
+                                break;
+                            }
+                            isValid = false;
+                        }
+                        if (isValid && passes.Count > 0)
+                        {
+                            int? ticketTypeLimitTotal = ticket.TicketType.LimitRuleValue;
+                            if (ticketTypeLimitTotal.HasValue && ticketTypeLimitTotal != -100)
+                            {
+                                if (passes.Count < ticketTypeLimitTotal)
+                                {
+                                    isValid = true;
+                                }
+                                else
+                                    isValid = false;
+                            }
+                            else
+                                isValid = true;
+                        }
+                        passes=passes.Where(x=>x.EventTime.Date==DateTime.Now && x.OrdNum==ticket.OrdNum).ToList();
+                        if (isValid && passes.Count > 0)
+                        {
+                            WeekSchedulesXGate tempSchWeek = await dbContext.WeekSchedulesXGates.Where(x => x.DailyIntervalId == dailyInterval.DailyIntervalId && x.WeekScheduleId == ticket.TicketType.WeekScheduleId && x.Day == day).Include(x=>x.WeekSchedule).FirstOrDefaultAsync();
+                            int? dailyLimit = tempSchWeek.WeekSchedule.LimitDay;
+                            int? intervalLimit = tempSchWeek.WeekSchedule.LimitInterval;
+                            if(isValid && dailyLimit != null && dailyLimit != -100 && intervalLimit != null && intervalLimit != -100)
+                            {
+                                List<Pass> passInterval = passes.Where(x => x.EventTime >= dailyInterval.StartTime && x.EventTime <= dailyInterval.EndTime).ToList();
+                                if (passes.Count >= dailyLimit || passInterval.Count >= intervalLimit)
+                                    isValid = false;
+                                else
+                                    isValid= true;
+                            }
+                        }
+                    }
+                    else
+                        isValid = false;
+                    if (isValid)
+                    {
+                        Gate gate = await dbContext.Gates.Where(x => x.GateId == vt.GateId).FirstOrDefaultAsync();
+                        await processPass(ticket,vt,gate);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                isValid=false;
+                _logger.LogError(ex, "Failed to handle card ident.");
+            }
+            return isValid;
+        }
+
+        private async Task checkLimitRemaining(string UID, bool passValid)
+        {
+            try
+            {
+                Actis3011aprilContext dbContext = new Actis3011aprilContext();
+                if (passValid)
+                {
+                    List<Ticket> tickets = await dbContext.Tickets.Where(x => x.TicketId == UID).OrderBy(x => x.OrdNum).ToListAsync();
+                    Ticket ticket = tickets[^1];
+                    if (ticket != null)
+                    {
+                        if (ticket.LimitTotal == -100)
+                        {
+
+                            ticket.ModifiedBy = "WS Service";
+                            ticket.ModifiedTime = DateTime.Now;
+                            ticket.RefuseMessage = "PRISTUP DOZVOLJEN! " + DateTime.Now.ToString("dd.MM.yyyy. HH:mm:ss");
+                            dbContext.Tickets.Update(ticket);
+                            await dbContext.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            if (ticket.LimitTotal > 0)
+                            {
+                                ticket.LimitTotal -= 1;
+                                ticket.ModifiedBy = "WS Service";
+                                ticket.ModifiedTime = DateTime.Now;
+                                ticket.RefuseMessage = "PRISTUP DOZVOLJEN! " + DateTime.Now.ToString("dd.MM.yyyy. HH:mm:ss");
+                                dbContext.Tickets.Update(ticket);
+                                await dbContext.SaveChangesAsync();
+                            }
+                        }
+                    } 
+                }
+                else
+                {
+                    List<Ticket> tickets = await dbContext.Tickets.Where(x => x.TicketId == UID).OrderBy(x => x.OrdNum).ToListAsync();
+                    Ticket ticket = tickets[^1];
+                    if (ticket != null)
+                    {
+                        ticket.ModifiedBy = "WS Service";
+                        ticket.ModifiedTime = DateTime.Now;
+                        ticket.RefuseMessage = "PRISTUP NIJE DOZVOLJEN! " + DateTime.Now.ToString("dd.MM.yyyy. HH:mm:ss");
+                        dbContext.Tickets.Update(ticket);
+                        await dbContext.SaveChangesAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to handle card ident.");
+            }
+        }
+
+        private async Task processPass(Ticket ticket, ValidationTerminal vt, Gate gate)
+        {
+            try
+            {
+                Pass pass = new Pass
+                {
+                    TicketId = ticket.TicketId,
+                    OrdNum = ticket.OrdNum,
+                    EventTime = DateTime.Now,
+                    ValidationTerminalId = vt.ValidationTerminalId,
+                    LocationId = gate.LocationId,
+                    GateId = gate.GateId,
+                    Direction = "IN",
+                    CreatedBy = "WS Service",
+                    CreatedTime = DateTime.Now
+                };
+                Actis3011aprilContext dbContext = new Actis3011aprilContext();
+                dbContext.Passes.Add(pass);
+                await dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to handle card ident.");
             }
