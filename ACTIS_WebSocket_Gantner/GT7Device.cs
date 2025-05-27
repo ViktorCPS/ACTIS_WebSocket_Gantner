@@ -21,6 +21,7 @@ namespace ACTIS_WebSocket_Gantner
         private readonly ILogger<GT7Device> _logger;
         private readonly string _deviceId;
         private readonly Gen7DeviceServer _device;
+        private static readonly Actis3011aprilContext dbContext = new();
         /// <summary>
         /// Constructor for GT7Device.
         /// </summary>
@@ -143,17 +144,17 @@ namespace ACTIS_WebSocket_Gantner
             try
             {
                 bool passValid = true;
-                if (await checkRequest(cardIdentEvent.UID))
+                if (await CheckRequest(cardIdentEvent.UID))
                 {
                     var response = await _device.SendRequestAsync<StartUnlockProcessRequest, StartUnlockProcessResponse>(new StartUnlockProcessRequest { DisplayText = "Pristup dozvoljen. Dobrodosli!", UnlockingTime_ms = 5000 });
                     _logger.LogDebug("Pristup dozvoljen.");
-                    await checkLimitRemaining(cardIdentEvent.UID,passValid);
+                    await CheckLimitRemaining(cardIdentEvent.UID,passValid);
                 }
                 else
                 {
                     var response = await _device.SendRequestAsync<StartDenyProcessRequest, StartDenyProcessResponse>(new StartDenyProcessRequest {DisplayText="Pristup nije dozvoljen!" });
                     _logger.LogDebug("Pristup nije dozvoljen.");
-                    await checkLimitRemaining(cardIdentEvent.UID, passValid);
+                    await CheckLimitRemaining(cardIdentEvent.UID, passValid);
                 }
             }
             catch (RequestFailedException ex)
@@ -162,23 +163,22 @@ namespace ACTIS_WebSocket_Gantner
             }
         }
 
-        private async Task<bool> checkRequest(string UID)
+        private async Task<bool> CheckRequest(string UID)
         {
             bool isValid = true;
 
             try
             {
                 //IZVLACENJE IZ dbContext info o terminalu,tiketu,dogadjaju,intervalu dnevnom za tu kartu za kapiju i provera da li je karta vazeca u tom trenutku
-                Actis3011aprilContext dbContext = new(); // konekcija sa bazom
-                ValidationTerminal vt = await dbContext.ValidationTerminals.Where(x => x.IpAddress == _deviceId && x.Status == "ENABLED").FirstOrDefaultAsync(); // izvlacenje terminala iz baze
-                List<Ticket> tickets = await dbContext.Tickets.Where(x => x.TicketId == UID).OrderBy(x => x.OrdNum).Include(x => x.TicketType).ToListAsync(); // svi ticketi sa ovim UID
-                List<DailyInterval> dailyIntervals = []; //
-                List<WeekSchedulesXGate> weekSchedulesXGate = [];
-                List<Pass> passes = [];
-                Ticket ticket = tickets[^1];
-                Event ticket_event = new();
-                DailyInterval dailyInterval = new();
-                int gateId = -1, terminalId = -1;
+                ValidationTerminal vt = await dbContext.ValidationTerminals.Where(x => x.IpAddress == _deviceId && x.Status == "ENABLED").FirstOrDefaultAsync(); // izvlacenje terminala iz baze u odnosu na IP adresu
+                List<Ticket> tickets = await dbContext.Tickets.Where(x => x.TicketId == UID && x.Status=="1").OrderBy(x => x.OrdNum).Include(x => x.TicketType).ToListAsync(); // svi ticketi sa ovim UID
+                List<DailyInterval> dailyIntervals = []; // dnevni intervali za ovaj tip karte na kapijama
+                List<WeekSchedulesXGate> weekSchedulesXGate = []; // intervaliXkapije
+                List<Pass> passes = []; // prolasci za ovaj TicketID
+                Ticket ticket = tickets[^1]; // poslednji ticket napravljen sa ovim TicketID
+                Event ticket_event = new(); // dogadjaj za taj tip karte
+                DailyInterval dailyInterval = new(); // dnevni interval koji je validan u trenutku cekiranja karte
+                int gateId = -1, terminalId = -1; // kapija, terminal iz baze ID
                 int day = (int)DateTime.Now.DayOfWeek;
                 if (vt != null)
                 {
@@ -191,7 +191,7 @@ namespace ACTIS_WebSocket_Gantner
                 }
                 if (isValid && ticket != null && ticket.EventId != null)
                 {
-                    ticket_event = await dbContext.Events.FindAsync(ticket.EventId);
+                    ticket_event = await dbContext.Events.Where(x=>x.EventId==ticket.EventId).FirstOrDefaultAsync();
                 }
                 else
                 {
@@ -213,7 +213,7 @@ namespace ACTIS_WebSocket_Gantner
 
                 if (isValid && ticket != null && vt != null && ticket_event != null && weekSchedulesXGate != null)
                 {
-                    if (ticket.ValidFrom <= DateTime.Now && ticket.ValidTo > DateTime.Now && (ticket.LimitTotal > 0 || ticket.LimitTotal == -100) && ticket.Status == "1" && ticket_event.DateStart <= DateTime.Now && ticket_event.DateEnd < DateTime.Now)
+                    if (ticket.ValidFrom <= DateTime.Now && ticket.ValidTo > DateTime.Now && (ticket.LimitTotal > 0 || ticket.LimitTotal == -100) && ticket.Status == "1" && ticket_event.DateStart <= DateTime.Now && ticket_event.DateEnd > DateTime.Now)
                     {
                         foreach (var item in dailyIntervals)
                         {
@@ -264,7 +264,7 @@ namespace ACTIS_WebSocket_Gantner
                     if (isValid)
                     {
                         Gate gate = await dbContext.Gates.Where(x => x.GateId == vt.GateId).FirstOrDefaultAsync();
-                        await processPass(ticket,vt,gate);
+                        await ProcessPass(ticket,vt,gate);
                     }
                 }
             }
@@ -276,11 +276,10 @@ namespace ACTIS_WebSocket_Gantner
             return isValid;
         }
 
-        private async Task checkLimitRemaining(string UID, bool passValid)
+        private async Task CheckLimitRemaining(string UID, bool passValid)
         {
             try
             {
-                Actis3011aprilContext dbContext = new Actis3011aprilContext();
                 if (passValid)
                 {
                     List<Ticket> tickets = await dbContext.Tickets.Where(x => x.TicketId == UID).OrderBy(x => x.OrdNum).ToListAsync();
@@ -294,7 +293,7 @@ namespace ACTIS_WebSocket_Gantner
                             ticket.ModifiedTime = DateTime.Now;
                             ticket.RefuseMessage = "PRISTUP DOZVOLJEN! " + DateTime.Now.ToString("dd.MM.yyyy. HH:mm:ss");
                             dbContext.Tickets.Update(ticket);
-                            await dbContext.SaveChangesAsync();
+                            dbContext.SaveChanges();
                         }
                         else
                         {
@@ -305,7 +304,7 @@ namespace ACTIS_WebSocket_Gantner
                                 ticket.ModifiedTime = DateTime.Now;
                                 ticket.RefuseMessage = "PRISTUP DOZVOLJEN! " + DateTime.Now.ToString("dd.MM.yyyy. HH:mm:ss");
                                 dbContext.Tickets.Update(ticket);
-                                await dbContext.SaveChangesAsync();
+                                dbContext.SaveChanges();
                             }
                         }
                     } 
@@ -320,7 +319,7 @@ namespace ACTIS_WebSocket_Gantner
                         ticket.ModifiedTime = DateTime.Now;
                         ticket.RefuseMessage = "PRISTUP NIJE DOZVOLJEN! " + DateTime.Now.ToString("dd.MM.yyyy. HH:mm:ss");
                         dbContext.Tickets.Update(ticket);
-                        await dbContext.SaveChangesAsync();
+                        dbContext.SaveChanges();
                     }
                 }
             }
@@ -330,13 +329,13 @@ namespace ACTIS_WebSocket_Gantner
             }
         }
 
-        private async Task processPass(Ticket ticket, ValidationTerminal vt, Gate gate)
+        private async Task ProcessPass(Ticket ticket, ValidationTerminal vt, Gate gate)
         {
             try
             {
-                Pass pass = new Pass
+                Pass pass = new()
                 {
-                    TicketId = ticket.TicketId,
+                    TicketId = ticket.TicketId, //047003CAAA4884
                     OrdNum = ticket.OrdNum,
                     EventTime = DateTime.Now,
                     ValidationTerminalId = vt.ValidationTerminalId,
@@ -346,13 +345,12 @@ namespace ACTIS_WebSocket_Gantner
                     CreatedBy = "WS Service",
                     CreatedTime = DateTime.Now
                 };
-                Actis3011aprilContext dbContext = new Actis3011aprilContext();
                 dbContext.Passes.Add(pass);
                 await dbContext.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to handle card ident.");
+                _logger.LogError(ex, "Failed to insert into actismgr.passes table. Error is: " + ex.ToString());
             }
         }
     }

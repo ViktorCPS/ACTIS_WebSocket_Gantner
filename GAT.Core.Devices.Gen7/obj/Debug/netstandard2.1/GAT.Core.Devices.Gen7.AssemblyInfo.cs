@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GAT.Core.Devices.Gen7")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.2.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3ada941a88806bf7d075f92d564b39e2cfc93276")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fb66fccd0b2b5831b556fb1a470b49636565eac7")]
 [assembly: System.Reflection.AssemblyProductAttribute("GAT.Core.Devices.Gen7")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GAT.Core.Devices.Gen7")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.2.0")]
