@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Data.Entity.Infrastructure;
 using System.Net.WebSockets;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace ACTIS_WebSocket_Gantner
         private readonly ILogger<GT7Device> _logger;
         private readonly string _deviceId;
         private readonly Gen7DeviceServer _device;
-        private static readonly Actis3011aprilContext dbContext = new();
+        private static Actis3011aprilContext dbContext = new();
         /// <summary>
         /// Constructor for GT7Device.
         /// </summary>
@@ -144,6 +145,7 @@ namespace ACTIS_WebSocket_Gantner
             try
             {
                 bool passValid = true;
+                dbContext = new();
                 if (await CheckRequest(cardIdentEvent.UID))
                 {
                     var response = await _device.SendRequestAsync<StartUnlockProcessRequest, StartUnlockProcessResponse>(new StartUnlockProcessRequest { DisplayText = "Pristup dozvoljen. Dobrodosli!", UnlockingTime_ms = 5000 });
@@ -166,7 +168,6 @@ namespace ACTIS_WebSocket_Gantner
         private async Task<bool> CheckRequest(string UID)
         {
             bool isValid = true;
-
             try
             {
                 //IZVLACENJE IZ dbContext info o terminalu,tiketu,dogadjaju,intervalu dnevnom za tu kartu za kapiju i provera da li je karta vazeca u tom trenutku
@@ -293,18 +294,18 @@ namespace ACTIS_WebSocket_Gantner
                             ticket.ModifiedTime = DateTime.Now;
                             ticket.RefuseMessage = "PRISTUP DOZVOLJEN! " + DateTime.Now.ToString("dd.MM.yyyy. HH:mm:ss");
                             dbContext.Tickets.Update(ticket);
-                            dbContext.SaveChanges();
+                            await dbContext.SaveChangesAsync();
                         }
                         else
                         {
                             if (ticket.LimitTotal > 0)
                             {
-                                ticket.LimitTotal -= 1;
+                                ticket.LimitTotal--;
                                 ticket.ModifiedBy = "WS Service";
                                 ticket.ModifiedTime = DateTime.Now;
                                 ticket.RefuseMessage = "PRISTUP DOZVOLJEN! " + DateTime.Now.ToString("dd.MM.yyyy. HH:mm:ss");
                                 dbContext.Tickets.Update(ticket);
-                                dbContext.SaveChanges();
+                                await dbContext.SaveChangesAsync();
                             }
                         }
                     } 
@@ -319,7 +320,7 @@ namespace ACTIS_WebSocket_Gantner
                         ticket.ModifiedTime = DateTime.Now;
                         ticket.RefuseMessage = "PRISTUP NIJE DOZVOLJEN! " + DateTime.Now.ToString("dd.MM.yyyy. HH:mm:ss");
                         dbContext.Tickets.Update(ticket);
-                        dbContext.SaveChanges();
+                        await dbContext.SaveChangesAsync();
                     }
                 }
             }

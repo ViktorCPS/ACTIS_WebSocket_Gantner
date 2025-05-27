@@ -165,3 +165,11 @@ C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_G
 C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\bin\Debug\net9.0\GAT.Core.Devices.Gen7.pdb
 C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\obj\Debug\net9.0\ACTIS_WebSocket_Gantner.sourcelink.json
 C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\bin\Debug\net9.0\EntityFramework.SqlServer.dll
+C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\bin\Debug\net9.0\EntityFramework.dll
+C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\bin\Debug\net9.0\System.Data.SqlClient.dll
+C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\bin\Debug\net9.0\runtimes\win-arm64\native\sni.dll
+C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\bin\Debug\net9.0\runtimes\win-x64\native\sni.dll
+C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\bin\Debug\net9.0\runtimes\win-x86\native\sni.dll
+C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\bin\Debug\net9.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\Viktor Smederevo\source\repos\ACTIS_WebSocket_Gantner\ACTIS_WebSocket_Gantner\bin\Debug\net9.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
