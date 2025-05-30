@@ -244,7 +244,7 @@ namespace ACTIS_WebSocket_Gantner
                             else
                                 isValid = true;
                         }
-                        passes=passes.Where(x=>x.EventTime.Date==DateTime.Now && x.OrdNum==ticket.OrdNum).ToList();
+                        passes=passes.Where(x=>x.EventTime.Date==DateTime.Now.Date && x.OrdNum==ticket.OrdNum).ToList();
                         if (isValid && passes.Count > 0)
                         {
                             WeekSchedulesXGate tempSchWeek = await dbContext.WeekSchedulesXGates.Where(x => x.DailyIntervalId == dailyInterval.DailyIntervalId && x.WeekScheduleId == ticket.TicketType.WeekScheduleId && x.Day == day).Include(x=>x.WeekSchedule).FirstOrDefaultAsync();
@@ -252,7 +252,7 @@ namespace ACTIS_WebSocket_Gantner
                             int? intervalLimit = tempSchWeek.WeekSchedule.LimitInterval;
                             if(isValid && dailyLimit != null && dailyLimit != -100 && intervalLimit != null && intervalLimit != -100)
                             {
-                                List<Pass> passInterval = passes.Where(x => x.EventTime >= dailyInterval.StartTime && x.EventTime <= dailyInterval.EndTime).ToList();
+                                List<Pass> passInterval = passes.Where(x => x.EventTime.TimeOfDay >= dailyInterval.StartTime.TimeOfDay && x.EventTime.TimeOfDay <= dailyInterval.EndTime.TimeOfDay).ToList();
                                 if (passes.Count >= dailyLimit || passInterval.Count >= intervalLimit)
                                     isValid = false;
                                 else
@@ -326,7 +326,7 @@ namespace ACTIS_WebSocket_Gantner
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to handle card ident.");
+                _logger.LogError(ex, "Failed to handle card ident."); 
             }
         }
 
