@@ -265,8 +265,10 @@ namespace ACTIS_WebSocket_Gantner
                     if (isValid)
                     {
                         Gate gate = await dbContext.Gates.Where(x => x.GateId == vt.GateId).FirstOrDefaultAsync();
-                        await ProcessPass(ticket,vt,gate);
+                        await ProcessPass(ticket, vt, gate);
                     }
+                    else
+                        await UpdateTicket(ticket);
                 }
             }
             catch (Exception ex)
@@ -275,6 +277,21 @@ namespace ACTIS_WebSocket_Gantner
                 _logger.LogError(ex, "Failed to handle card ident.");
             }
             return isValid;
+        }
+
+        private async Task UpdateTicket(Ticket ticketP)
+        {
+            if (ticketP != null)
+            {
+                List<Ticket> tickets = await dbContext.Tickets.Where(x => x.TicketId == ticketP.TicketId).OrderBy(x => x.OrdNum).ToListAsync();
+                Ticket ticket = tickets[^1];
+                ticket.ModifiedBy = "WS Service";
+                ticket.ModifiedTime = DateTime.Now;
+                ticket.RefuseMessage = "PRISTUP ODBIJEN! " + DateTime.Now.ToString("dd.MM.yyyy. HH:mm:ss");
+                ticket.Status = "3";
+                dbContext.Tickets.Update(ticket);
+                await dbContext.SaveChangesAsync();
+            }
         }
 
         private async Task CheckLimitRemaining(string UID, bool passValid)
@@ -301,6 +318,8 @@ namespace ACTIS_WebSocket_Gantner
                             if (ticket.LimitTotal > 0)
                             {
                                 ticket.LimitTotal--;
+                                if (ticket.LimitTotal == 0)
+                                    ticket.Status = "3";
                                 ticket.ModifiedBy = "WS Service";
                                 ticket.ModifiedTime = DateTime.Now;
                                 ticket.RefuseMessage = "PRISTUP DOZVOLJEN! " + DateTime.Now.ToString("dd.MM.yyyy. HH:mm:ss");
